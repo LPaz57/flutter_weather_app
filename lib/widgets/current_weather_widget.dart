@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_openweather_app/consts/app_consts.dart';
 import 'package:flutter_openweather_app/widgets/current_info_widget.dart';
+import 'package:flutter_openweather_app/widgets/search_city_widget.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
   const CurrentWeatherWidget({
@@ -46,7 +47,13 @@ class CurrentWeatherWidget extends StatelessWidget {
       ),
       child: Column(children: [
         const SizedBox(
-          height: 100,
+          height: 38,
+        ),
+        SearchCityWidget(
+          width: size.width * 0.90,
+          height: size.height * 0.07,
+          searchController: TextEditingController(),
+          onTap: () {},
         ),
         Text(
           '$temp °C',

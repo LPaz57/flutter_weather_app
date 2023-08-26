@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    listener.cancel();
+    //listener.cancel();
     super.dispose();
   }
 
@@ -108,16 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SearchCityWidget(
-                            width: size.width * 0.90,
-                            height: size.height * 0.07,
-                            searchController: TextEditingController(),
-                            onTap: () {},
-                          ),
                           CurrentWeatherWidget(
                             size: size,
-                            temp: //con grados celsius
-                                '${data.main!.temp!.round()}°',
+                            temp: kelvinToCelsius(data.main!.temp!)
+                                .toStringAsFixed(2),
                             description: '${data.weather![0].description}',
                             image: imageHandler((data.id!.toInt()), time),
                             cityName:
@@ -126,9 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     : '${data.coord!.lat}, ${data.coord!.lon}',
                             country: data.sys!.country!.toString(),
                             date: dateFormat,
-                            humidity: '${data.main!.humidity}%',
-                            speed: '${data.wind!.speed} km/h}',
-                            windDirection: '${data.wind!.deg}°',
+                            humidity: '${data.main!.humidity}',
+                            speed: '${data.wind!.speed}',
+                            windDirection: '${data.wind!.deg}',
                           ),
                           TodayWidget(),
                           Expanded(
@@ -165,11 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                   itemBuilder: (context, index) {
                                     var item = data.list![index];
                                     return HourForecastWidget(
-                                        image: imageHandler(800, time),
-                                        time: DateFormat('HH:mm').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                (item.dt ?? 0) * 1000)),
-                                        forecastTemp: '${item.main!.temp}°C');
+                                      image: imageHandler(800, time),
+                                      time: DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              (item.dt ?? 0) * 1000)),
+                                      forecastTemp:
+                                          kelvinToCelsius(item.main!.temp!)
+                                              .toStringAsFixed(2),
+                                    );
                                   },
                                 );
                               }
@@ -206,5 +203,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     controller.position.value = await location.getLocation();
     listener = location.onLocationChanged.listen((event) {});
+  }
+
+  kelvinToCelsius(double temp) {
+    return temp - 273.15;
   }
 }

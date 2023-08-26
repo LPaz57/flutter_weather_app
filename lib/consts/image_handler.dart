@@ -22,7 +22,7 @@ String imageHandler(int id, String time) {
   } else if (id == 801 && time == '') {
     return 'assets/img/night_cloudy.png';
   } else {
-    return 'assets/img/unknown.png';
+    return 'assets/img/cloudy.png';
   }
 }
 
